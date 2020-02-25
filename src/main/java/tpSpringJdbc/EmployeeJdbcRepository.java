@@ -2,16 +2,31 @@ package tpSpringJdbc;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.hibernate.Session;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class EmployeeJdbcRepository extends AbstractJdbcRepository implements EmployeeRepository {
 
+	@PersistenceContext
+	protected EntityManager em;
 	
-	public void save() {
-		this.jdbcTemplate.update(
-		"insert into employee(firstname, lastname) values(?,?)","steve", "jobs");
+	protected Session getSession() {
+		return em.unwrap(Session.class);
+	}
+	
+	public void persist(Object entity) {
+		em.persist(entity);
+	}
+	
+	public void save(Object entity) {
+		/*this.jdbcTemplate.update(
+		"insert into employee(firstname, lastname) values(?,?)","steve", "jobs");*/
+		this.persist(entity);	
 	}
 
 	public List<Employee> findAll() {
@@ -27,7 +42,7 @@ public class EmployeeJdbcRepository extends AbstractJdbcRepository implements Em
 		Long emTemp = 0L;
 		for(Employee em : empList) {
 			emTemp = this.findOne(em.getId()).getId();
-			if(emTemp != null || emTemp != 0) {
+			if(emTemp != null || emTemp != 0L) {
 				this.jdbcTemplate.update(
 						"update employee set firstname = ?, lastname = ? where id= ?", "bobi", "dylan", em.getId());
 			}
@@ -41,6 +56,11 @@ public class EmployeeJdbcRepository extends AbstractJdbcRepository implements Em
 			return null;
 		}
 		
+	}
+
+	@Override
+	public void deleteAllEmployee() {
+		// TODO Auto-generated method stub	
 	}
 
 	

@@ -8,29 +8,28 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class EmployeeJdbcService {
-	
+public class EmployeeJpaService {
+
 	@Autowired
-	private EmployeeJdbcRepository employeeJdbcRepo;
+	private EmployeeJpaRepository empJpaRepo;
 	
 	public void save(Object entity) {
-		this.employeeJdbcRepo.save(entity);
+		this.empJpaRepo.save(entity);
 	}
 	
 	public List<Employee> findAll(){
-		return this.employeeJdbcRepo.findAll();
+		return this.empJpaRepo.findAll();
 	}
 	
 	public Employee findOne(Long id) {
-		return this.employeeJdbcRepo.findOne(id);
+		return this.empJpaRepo.findOne(id);
 	}
 	
 	public void update(List<Employee> list) {
 		try {
-			this.employeeJdbcRepo.update(list);
+			this.empJpaRepo.update(list);
 		} catch (Exception e) {
 			throw new RuntimeException(String.format("Erreur employee non trouv�e"));
 		}
 	}
-
 }

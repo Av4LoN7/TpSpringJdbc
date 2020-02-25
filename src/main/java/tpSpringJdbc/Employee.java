@@ -2,12 +2,30 @@ package tpSpringJdbc;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+
+@Entity
 public class Employee {
+	
+	@Column
 	private String firstName;
+	@Column
 	private String lastName;
+	@Column
 	private int ssn;
+	@Column
 	private LocalDate hiredate;
+	@Id
+	@GeneratedValue
 	private Long id;
+	
+	@ManyToOne
+	private Company company;
 	
 	
 	public Employee() {
@@ -61,6 +79,16 @@ public class Employee {
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+	
+	
 	
 	
 	
